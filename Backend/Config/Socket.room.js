@@ -10,7 +10,7 @@ const { SocketAuth } = require("./Socket.Auth")
 module.exports = (server, sessionMiddleware) => {
     const io = require('socket.io')(server, {
         path: "/messenger",
-        transports: ["polling", "websocket"],
+        transports: ["websocket"],
         maxHttpBufferSize: 1e+9, // get data size by socket.io as payload
         cors: {
             origin: process.env.UI_URL,
@@ -42,8 +42,8 @@ module.exports = (server, sessionMiddleware) => {
         console.log("a user is connected")
         console.log(count)
         socket.emit("rooms", allRooms)
-        socket.on("create_room", async ({ roomName, name, userID, members, pic,rId }) => {
-            const roomId= rId+roomName
+        socket.on("create_room", async ({ roomName, name, userID, members, pic, rId }) => {
+            const roomId = rId + roomName
             try {
                 console.log({ roomName, name, userID, members, pic })
                 const time = new Date().getTime()
@@ -81,9 +81,9 @@ module.exports = (server, sessionMiddleware) => {
         socket.on("on_join", async ({ roomID, roomName, name, pic, userID, sid }) => {
             // TODO: check room exists with this roomID and roomName
             const onRoomFind = findRoomIndex(roomName, roomID)
-           const result=  await chatRoom.in(roomID).fetchSockets();
-           console.log(chatRoom.adapters)
-           console.log({result})
+            const result = await chatRoom.in(roomID).fetchSockets();
+            console.log(chatRoom.adapters)
+            console.log({ result })
             // TODO: from db
             const onRoomFindDb = await RoomDb.findOne({ roomName, roomId: roomID })
             if (onRoomFind !== -1) {
@@ -101,7 +101,7 @@ module.exports = (server, sessionMiddleware) => {
                             onRoomFindDb.userInRoom.push({ name, userID, pic, sid: socket.id })
                             await onRoomFindDb.save()
                             allRooms[onRoomFind].userInRoom.push({ name, userID, pic, sid: socket.id })
-                        socket.broadcast.to(roomID).emit("on_join", `${name} has join group`)
+                            socket.broadcast.to(roomID).emit("on_join", `${name} has join group`)
                         }
                         socket.join(roomID)
                         // socket.join(roomName)
@@ -159,12 +159,12 @@ module.exports = (server, sessionMiddleware) => {
         })
 
         // TODO: on room reload
-        socket.on("on_page_reload",({ roomName, roomId })=>{
+        socket.on("on_page_reload", ({ roomName, roomId }) => {
             console.log({ roomName, roomId })
             const roomByIndex = findRoomIndex(roomName, roomId)
-            if(roomByIndex !==-1){
+            if (roomByIndex !== -1) {
                 const getRoom = allRooms[roomByIndex]
-                socket.emit("on_page_reload",getRoom)
+                socket.emit("on_page_reload", getRoom)
             }
         })
         // TODO: on leave the room

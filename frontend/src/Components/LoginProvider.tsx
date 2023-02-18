@@ -3,7 +3,6 @@ interface itemInterface {
     icon: JSX.Element,
     id: number
 }
-const URL = process.env.REACT_APP_BACKEND_DOMAIN
 type PropType = {
     item: itemInterface
 }
@@ -12,13 +11,13 @@ function LoginProvider({ item }: PropType): JSX.Element {
         <div className="google_btn flex justify-center items-center  rounded-md py-0 my-2 px-[3.3rem] mobile:px-[1rem] cursor-pointer overflow-hidden"
             onClick={() => {
                 if (item.id === 1) {
-                    const res = window.open(URL + "/api/v1/login/google", "_self")
+                    const res = window.open("/api/v1/login/google", "_self")
                 }
                 else if (item.id === 2) {
-                    window.open(URL + "/api/v1/login/facebook", "_self")
+                    window.open("/api/v1/login/facebook", "_self")
                 }
                 else if (item.id === 3) {
-                    window.open(URL + "/api/v1/login/github", "_self")
+                    window.open("/api/v1/login/github", "_self")
                 }
             }}
         >

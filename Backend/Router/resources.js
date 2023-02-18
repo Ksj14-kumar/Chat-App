@@ -2,7 +2,9 @@ const { isAuth } = require("../Config/isAuth")
 const router = require("express").Router()
 const path= require("path")
 
-router.get("/user", isAuth, async (req, res) => {
+
+router.use(isAuth)
+router.get("/user",  async (req, res) => {
     try {
         return res.send("user")
     } catch (err) {
@@ -10,7 +12,7 @@ router.get("/user", isAuth, async (req, res) => {
         return res.status(500).send("something error")
     }
 })
-router.post("/file",isAuth, async (req, res) => {
+router.post("/file", async (req, res) => {
     try {
         console.log(req.headers)
         const filePath = req.headers.filepath

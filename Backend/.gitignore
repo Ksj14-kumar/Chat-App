@@ -3,3 +3,6 @@
 node_modules
 *.http
 ProfileImages
+*.txt
+practice.js
+Messagefile

@@ -26,8 +26,6 @@ const sessionMiddleware = expressSession({
     }
 })
 
-
-
 //===================Global Middleware start==============
 app.use(express.static(path.join(__dirname, "view")))
 app.use(express.static(path.join(__dirname, "Messagefile")))
@@ -47,7 +45,6 @@ strategy()
 app.use(passport.initialize())
 app.use(passport.session())
 //===================Socket-Connection===============
-// require("./Config/SocketDummyConnection")(server)
 require("./Config/Socket.room")(server, sessionMiddleware)
 //=====================Socket-Connection-End==============
 app.use("/api/v1/", registerLoginRouter)
@@ -57,9 +54,9 @@ app.get("/admin", async (req, res) => {
 })
 
 
-// app.get("*", async (req, res) => {
-//     return res.sendFile(path.join(__dirname, "index.html"))
-// })
+app.get("*", async (req, res) => {
+    return res.sendFile(path.join(__dirname, "view","index.html"))
+})
 app.use(error)
 //===================Global Middleware End==============
 
@@ -69,10 +66,6 @@ console.log = function (d) {
     process.stdout.write(utl.format(d) + "\n")
 }
 
-
-require("./practice")
-// const crypt = require("crypto")
-// console.log(crypt.randomBytes(64).toString("hex"))
 //================Mongo Connection=============
 
 mongoose.connection.once("open", (err) => {

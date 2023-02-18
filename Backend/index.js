@@ -53,7 +53,6 @@ app.get("/admin", async (req, res) => {
     return res.send("hii")
 })
 
-
 app.get("*", async (req, res) => {
     return res.sendFile(path.join(__dirname, "view","index.html"))
 })
